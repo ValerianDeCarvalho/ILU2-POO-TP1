@@ -68,7 +68,17 @@ public class Village {
 
 	public String rechercherVendeursProduit(String produit) {
 		StringBuilder chaine = new StringBuilder();
-		marche.trouverEtals(produit);
+		Etal[] vendeursProduit = marche.trouverEtals(produit);
+		if (vendeursProduit.length > 0) {
+			for (int i = 0; i < vendeursProduit.length; i++) {
+				chaine.append("");
+			}
+		} else if (vendeursProduit.length == 1) {
+			chaine.append("Seul le vendeur Bonemine propose des fleurs au marché.\n");
+		} else {
+			chaine.append("Il n'y a pas de vendeur qui propose des " + produit + " au marché.\n");
+		}
+		return chaine.toString();
 	}
 
 	private static class Marche {
