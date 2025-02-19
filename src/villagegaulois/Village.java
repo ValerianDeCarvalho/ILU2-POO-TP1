@@ -8,10 +8,13 @@ public class Village {
 	private Chef chef;
 	private Gaulois[] villageois;
 	private int nbVillageois = 0;
+	private Marche marche;
+	private int nbEtals = 0;
 
-	public Village(String nom, int nbVillageoisMaximum) {
+	public Village(String nom, int nbVillageoisMaximum, int nbEtals) {
 		this.nom = nom;
 		villageois = new Gaulois[nbVillageoisMaximum];
+		marche = new Marche(nbEtals);
 	}
 
 	public String getNom() {
@@ -67,11 +70,11 @@ public class Village {
 			}	
 		}
 		
-		void utiliserEtal (int indiceEtal, Gaulois vendeur, String produit, int nbProduit) {
+		private void utiliserEtal (int indiceEtal, Gaulois vendeur, String produit, int nbProduit) {
 			etals[indiceEtal].occuperEtal(vendeur, produit, nbProduit);
 		}
 		
-		int trouverEtalLibre() {
+		private int trouverEtalLibre() {
 			for (int i = 0; i < etals.length; i++) {
 				if (etals[i].isEtalOccupe()==false) {
 					return i;
@@ -80,8 +83,47 @@ public class Village {
 			return -1;
 		}
 		
-		Etal[] trouverEtals(String produit) {
+		private Etal[] trouverEtals(String produit) {
+			Etal[] etalsProduit;
+			int taille = 0;
 			
+			for (int i = 0; i < etals.length; i++) {
+				if (etals[i].contientProduit(produit)==true) {
+					taille ++;
+				}
+			}
+			
+		    int index = 0;
+			etalsProduit = new Etal[taille];
+			
+		    for (int j = 0; j < etals.length; j++) {
+		        if (etals[j].contientProduit(produit)) {
+		            etalsProduit[index] = etals[j];
+		            index++;
+		        }
+		    }
+		    
+		    return etalsProduit;
+		}
+		
+		private Etal trouverVendeur(Gaulois gaulois) {
+			for (int i = 0; i < etals.length; i++) {
+				if ((etals[i].getVendeur().getNom()).equals(gaulois.getNom()));
+					return etals[i];
+			}
+			return null;
+		}
+		
+		private void afficherMarche() {
+			int nbVide = 0;
+			for (int i = 0; i < etals.length; i++) {
+				if (etals[i].isEtalOccupe()==true) {
+					etals[i].afficherEtal();
+				} else {
+					nbVide++;
+				}
+			}
+			System.out.println("Il reste " + nbVide + " etals non utilisés dans le marché.");
 		}
 		
 	}
